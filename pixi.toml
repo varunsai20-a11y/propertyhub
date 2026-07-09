@@ -6,9 +6,21 @@ platforms = ["win-64"]
 version = "0.1.0"
 
 [tasks]
-dev     = { cmd = "npm run dev",     description = "Start Vite dev server" }
-build   = { cmd = "npm run build",   description = "TypeScript check + Vite production build" }
-preview = { cmd = "npm run preview", description = "Preview production build locally" }
-push    = { cmd = "git add -A ; git commit -m 'chore: update' ; git push origin main", description = "Stage all, commit, and push to GitHub" }
+# ── Setup ──────────────────────────────────────────────────────────────────
+install = { cmd = "npm install", description = "Install Node dependencies" }
+
+# ── Development ────────────────────────────────────────────────────────────
+dev     = { cmd = "npm run dev",     depends-on = ["install"], description = "Install deps then start Vite dev server (HMR)" }
+start   = { cmd = "npm run dev",     depends-on = ["install"], description = "Alias for dev — start the website locally" }
+
+# ── Production ─────────────────────────────────────────────────────────────
+build   = { cmd = "npm run build",   depends-on = ["install"], description = "TypeScript check + Vite production build" }
+preview = { cmd = "npm run preview", depends-on = ["build"],   description = "Build then preview production bundle locally" }
+
+# ── Git / Deploy ───────────────────────────────────────────────────────────
+push    = { cmd = "git add -A ; git commit -m 'chore: update' ; git push origin main", description = "Stage all changes, commit, and push to GitHub" }
+deploy  = { cmd = "npm run build",   depends-on = ["install"], description = "Full production build ready for deployment" }
 
 [dependencies]
+nodejs = ">=20"
+git    = ">=2"
