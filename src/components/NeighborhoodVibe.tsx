@@ -53,10 +53,17 @@ export function NeighborhoodVibe({
     if (playing) {
       window.speechSynthesis.cancel();
       setPlaying(false);
+      setProgress(0);
       return;
     }
-    const u = new SpeechSynthesisUtterance(quote);
-    u.rate = 0.95;
+
+    // Build a longer narration by repeating context so it fills ~30 seconds
+    const narration =
+      `Here's what the owner says about this property. ${quote} ` +
+      `The owner, ${ownerName}, adds: ${quote}`;
+
+    const u = new SpeechSynthesisUtterance(narration);
+    u.rate = 0.82;   // slower pace ≈ 30 s for most quote lengths
     u.pitch = 1;
     u.onend = () => {
       setPlaying(false);
@@ -65,13 +72,15 @@ export function NeighborhoodVibe({
     utteranceRef.current = u;
     window.speechSynthesis.speak(u);
     setPlaying(true);
+
+    // Always track against a fixed 30-second window
+    const DURATION_MS = 30_000;
     const start = Date.now();
-    const dur = Math.min(30, Math.max(8, quote.length / 3)) * 1000;
     const tick = setInterval(() => {
-      const t = Math.min(100, ((Date.now() - start) / dur) * 100);
+      const t = Math.min(100, ((Date.now() - start) / DURATION_MS) * 100);
       setProgress(t);
       if (t >= 100) clearInterval(tick);
-    }, 100);
+    }, 200);
   };
 
   return (
