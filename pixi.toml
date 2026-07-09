@@ -1,0 +1,14 @@
+[workspace]
+authors = ["Varun <varunsai.1028@gmail.com>"]
+channels = ["conda-forge"]
+name = "propertyhub"
+platforms = ["win-64"]
+version = "0.1.0"
+
+[tasks]
+dev     = { cmd = "npm run dev",     description = "Start Vite dev server" }
+build   = { cmd = "npm run build",   description = "TypeScript check + Vite production build" }
+preview = { cmd = "npm run preview", description = "Preview production build locally" }
+push    = { cmd = "git add -A && git commit -m \"chore: update\" && git push origin main", description = "Stage all, commit, and push to GitHub" }
+
+[dependencies]
