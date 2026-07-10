@@ -1,6 +1,6 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
-import { AuthModal } from "./components/AuthModal";
+import { ClerkSync } from "./components/ClerkSync";
 import { SavePromptModal } from "./components/SavePromptModal";
 import { LandingPage } from "./pages/LandingPage";
 import { ListingsPage } from "./pages/ListingsPage";
@@ -19,6 +19,7 @@ function ScrollToTop() {
 export default function App() {
   return (
     <div className="flex min-h-full flex-col">
+      <ClerkSync />
       <ScrollToTop />
       <Navbar />
       <main className="flex-1">
@@ -42,8 +43,8 @@ export default function App() {
           />
         </Routes>
       </main>
-      <AuthModal />
       <SavePromptModal />
     </div>
   );
 }
+
